@@ -1,0 +1,26 @@
+{
+    "Buttons": {
+        "Btn_AddTile": {
+            "position": {
+                "x": 100,
+                "y": 200
+            },
+            "size": {
+                "w": 20,
+                "h": 20
+            },
+            "filePath" : "./images/Editor/Button/Btn_AddTile.bmp"
+        },
+        "Btn_RemoveTile": {
+            "position": {
+                "x": 320,
+                "y": 250
+            },
+            "size": {
+                "w": 20,
+                "h": 20
+            },
+            "filePath" : "./images/Editor/Button/Btn_RemoveTile.bmp"
+        }
+    }
+}

@@ -11,6 +11,8 @@ public:
 
 	void Update() override;
 
+	void Clear() override;
+
 private:
 	//////  event trigger /////
 	void DispatchMousePosition_LeftClick(int mouseX, int mouseY);
@@ -27,6 +29,10 @@ private:
 
 	void DispatchKeyboardEvent_O();
 
+	void DispatchKeyboardEvent_I();
+
+	void DispatchKeyboardEvent_U();
+
 	void HandleEditorState(const Entity& entity, Uint32 mouseState, const Uint8 *keyboard_State);
 
 	void HandleGameState(const Entity& entity, Uint32 mouseState, const Uint8 *keyboard_State);
@@ -35,6 +41,4 @@ private:
 	int m_MouseX;
 
 	int m_MouseY;
-
-	GAME_STATE m_State;
 };

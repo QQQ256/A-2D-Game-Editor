@@ -15,6 +15,9 @@ void SDLGraphicsSystem::Init(){
 void SDLGraphicsSystem::Update(){
 
 }
+void SDLGraphicsSystem::Clear()
+{
+}
 
 void SDLGraphicsSystem::SetSDLWindow(int w, int h){
     mScreenWidth = w;
@@ -28,6 +31,21 @@ void SDLGraphicsSystem::SetSDLWindow(int w, int h){
         std::cerr << "SDL could not initialize! SDL Error: " << SDL_GetError() << "\n";
         exit(1);
     }
+
+    // init SDL2_mixer
+    if (Mix_Init(MIX_INIT_OGG) == 0)
+    {
+        std::cerr << "Error initializing SDL_mixer: " << Mix_GetError() << std::endl;
+        return;
+    }
+
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+    {
+        std::cerr << "Error opening audio: " << Mix_GetError() << std::endl;
+        exit(1);
+    }
+
+    Mix_Init(0);
 
     //Create window
     mWindow = SDL_CreateWindow( "Lab", 100, 100, mScreenWidth, mScreenHeight, SDL_WINDOW_SHOWN );

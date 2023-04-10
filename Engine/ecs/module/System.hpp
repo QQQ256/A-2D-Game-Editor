@@ -25,10 +25,11 @@ class ISystem{
 public:
     set<Entity> m_Entities;
 
-	// TODO:将其他系统中的GAME_STATE都删掉
-	GAME_STATE	m_State;
-
 	virtual void Init() = 0;
 	
     virtual void Update() = 0;
+
+	virtual void Clear(){
+		m_Entities.clear();
+	};
 };

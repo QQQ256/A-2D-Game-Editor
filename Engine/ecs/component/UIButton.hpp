@@ -9,6 +9,5 @@
 
 struct UIButton
 {
-    SDL_Rect rect;
+    SDL_Rect 	rect;
 };
-

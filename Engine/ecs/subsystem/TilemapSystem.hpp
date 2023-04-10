@@ -12,18 +12,13 @@ public:
 
 	void Update() override;
 
-    Tilemap CreateTileMap(string tileSheetFileName, int rows, int cols, int TileWidth, int TileHeight, int mapX, int mapY, int scaleFactor, vector<int>& m_TileMapVector);
+    void Clear() override;
 
-    void Editor_SetTile(int x, int y, int type);
+    Tilemap CreateTileMap(string tileSheetFileName, int rows, int cols, int TileWidth, int TileHeight, int mapX, int mapY, int scaleFactor, vector<int>& m_TileMapVector, int gap);
 
     ~TilemapSystem();
 
 private:
-
-    /// @brief legacy，之前mike写的
-    void GenerateSimpleMap();
-
-    void SetTile(int x, int y, int type);
 
     void PrintMap();
 
@@ -34,7 +29,6 @@ private:
     void DispatchLevelData(vector<int>& levelData);
 
     /// @brief Store tilemap object from JSON
-    Tilemap                 m_TileMap                       = {};
     vector<vector<int>>     m_TileMapVector                 = {};
     SDL_Renderer*           m_Render                        = nullptr;
     SDL_Texture*            m_TilemapTexture                = nullptr;

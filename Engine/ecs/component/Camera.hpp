@@ -16,4 +16,6 @@ struct Camera
     int         viewportHeight; 
     int         worldWidth; // 游戏地图大小
     int         worldHeight; // 
+    int         cameraMaxX;
+    int         edge;
 };

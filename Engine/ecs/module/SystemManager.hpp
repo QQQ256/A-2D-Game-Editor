@@ -32,7 +32,7 @@ public:
         assert(m_System.find(componentName) != m_System.end() 
                 && "Registering system more than once.");
 
-        cout << "Set System Signature " << typeid(T).name() << " set signature: " << signature << endl;
+        // cout << "Set System Signature " << typeid(T).name() << " set signature: " << signature << endl;
     
         m_Signature[componentName] = signature;
     }

@@ -33,6 +33,8 @@ class SDLGraphicsSystem : public ISystem{
 
         void Update() override;
 
+        void Clear() override;
+
 private:
         int             mScreenWidth{0};
         int             mScreenHeight{0};

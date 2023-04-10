@@ -11,8 +11,8 @@ Entity EntityManager::CreateEntity(){
     // if(m_existedGameObjectCount > MAX_GameObject_Count){
         
     // }
-    std::cout << "CreateEntity " << m_existedEntityCount << std::endl;
     Entity id = m_entityQueue.front();
+    std::cout << "CreateEntity with id" << id << std::endl;
     m_entityQueue.pop();
     m_existedEntityCount++;
 

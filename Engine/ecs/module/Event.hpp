@@ -28,26 +28,17 @@ public:
         // m_EventMap[id] = value;
     }
 
-    template<typename T>
-    T GetParameter(const string& key) const{
-        // because we use const, we cannot use operator[], so we use find
-        // if (it != m_EventMap.end())
-        // {
-        //     return *static_cast<T*>(m_EventMap[key].get());
-        // }
-        // try
-        // {
-        //     auto it = m_EventMap.find(key);
-        // }
-        // catch(const std::exception& e)
-        // {
-        //     std::cerr << e.what() << '\n';
-        // }
-        
+    template <typename T>
+    T GetParameter(const string &key) const
+    {
         auto it = m_EventMap.find(key);
+        if (it == m_EventMap.end())
+        {
+            std::cerr << "Key not found: " << key << std::endl;
+        }
         assert(it != m_EventMap.end());
-        
-        return *static_cast<T*>(it->second.get());
+
+        return *static_cast<T *>(it->second.get());
     }
 
     /// @brief convert enum event id to string

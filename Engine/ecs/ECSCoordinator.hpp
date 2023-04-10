@@ -5,6 +5,8 @@
 #include "ComponentManager.hpp"
 #include "SystemManager.hpp"
 #include "EventManager.hpp"
+#include "SceneManager.hpp"
+#include "AudioManager.hpp"
 
 // subsystems
 #include "PlayerControllerSystem.hpp"
@@ -16,6 +18,10 @@
 #include "LevelEditorSystem.hpp"
 #include "UISystem.hpp"
 #include "CameraSystem.hpp"
+#include "PhysicsManagerSystem.hpp"
+#include "GameplaySystem.hpp"
+#include "ScriptingSystem.hpp"
+#include "ControllerSystem.hpp"
 
 // components
 #include "InPut.hpp"
@@ -26,14 +32,25 @@
 #include "Renderer.hpp"
 #include "Enemy.hpp"
 #include "Editor.hpp"
-#include "UIButton.hpp"
 #include "Camera.hpp"
+#include "UIComponent.hpp"
+#include "Script.hpp"
+#include "Name.hpp"
+#include "Controlling.hpp"
+#include "PhysicsBody.hpp"
 
 #include "FileReader.hpp"
+#include "Utils.hpp"
 
 class ECSCoordinator{
 public:
     ECSCoordinator();
+
+    void Init();
+
+    void Update();
+
+    void Render();
 
     // --- Component Manager ---
 
@@ -80,9 +97,17 @@ public:
 
     inline void TriggerEvent(EVENT eventId);
 
+    SceneManager &getSceneManager() { return *m_SceneManager; }
+    ComponentManager &getComponentManager() { return *m_ComponentManager; }
+    EntityManager &getEntityManager() { return *m_EntityManager; }
+    SystemManager &getSystemManager() { return *m_SystemManager; }
+    EventManager &getEventManager() { return *m_EventManager; }
 
+    shared_ptr<GameplaySystem> getGameplaySystem() const {return m_GameplaySystem;}
+
+    // TODO: 将所有的这些都设置为私有，并提供get方法获取
     shared_ptr<RenderSystem>                    m_RenderSystem;
-    shared_ptr<PlayerControllerSystem>          m_PlayerControllerSystem;
+    // shared_ptr<PlayerControllerSystem>          m_PlayerControllerSystem;
     shared_ptr<SpriteSystem>                    m_SpriteSystem;
     shared_ptr<TilemapSystem>                   m_TilemapSystem;
     shared_ptr<SDLGraphicsSystem>               m_SDLGraphicsSystem;
@@ -90,10 +115,20 @@ public:
     shared_ptr<LevelEditorSystem>               m_LevelEditorSystem;
     shared_ptr<UISystem>                        m_UISystem;
     shared_ptr<CameraSystem>                    m_CameraSystem;
+    shared_ptr<ScriptingSystem>                 m_ScriptingSystem;
+    shared_ptr<ControllerSystem>                m_ControllerSystem;
+    
+    shared_ptr<PhysicsManagerSystem>            m_PhysicsManagerSystem;
 
     GAME_STATE                                  m_State;
+
+    Tilemap                                     m_Tilemap;
+
+    Entity                                      m_PlayerEntity;
 private:
+    shared_ptr<GameplaySystem>                  m_GameplaySystem;
     
+    unique_ptr<SceneManager>                    m_SceneManager;
     unique_ptr<ComponentManager>                m_ComponentManager;
     unique_ptr<EntityManager>                   m_EntityManager;
     unique_ptr<SystemManager>                   m_SystemManager;
@@ -147,10 +182,6 @@ void ECSCoordinator::RemoveComponent(Entity entity){
 //     m_SystemManager->DestroyEntity(entity);
 // }
 
-/// @brief 基于entity的ID查找挂载再它身上的组件ID
-/// @tparam T 组件类型
-/// @param entity 你要查找的entity
-/// @return 
 template<typename T>
 T& ECSCoordinator::GetComponent(Entity entity){
     return m_ComponentManager->GetComponent<T>(entity);

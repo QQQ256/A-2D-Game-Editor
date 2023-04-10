@@ -4,7 +4,7 @@ import platform
 # (1)==================== COMMON CONFIGURATION OPTIONS ======================= #
 COMPILER="clang++ -g -std=c++17"   # The compiler we want to use 
                                 #(You may try g++ if you have trouble)
-SOURCE="./src/*.cpp"    # Where the source code lives
+SOURCE="./src/*.cpp ./external/box2d/src/collision/*.cpp ./external/box2d/src/common/*.cpp ./external/box2d/src/dynamics/*.cpp ./external/box2d/src/rope/*.cpp"    # Where the source code lives
 EXECUTABLE="lab"        # Name of the final executable
 # ======================= COMMON CONFIGURATION OPTIONS ======================= #
 
@@ -16,17 +16,17 @@ LIBRARIES=""            # What libraries do we want to include
 
 if platform.system()=="Linux":
     ARGUMENTS="-D LINUX" # -D is a #define sent to preprocessor
-    INCLUDE_DIR="-I ./include/"
+    INCLUDE_DIR="-I ./include/ -I./external/box2d/include"
     LIBRARIES="-lSDL2 -ldl"
 elif platform.system()=="Darwin":
     ARGUMENTS="-D MAC" # -D is a #define sent to the preprocessor.
-    INCLUDE_DIR="-I ./include/ -I/Library/Frameworks/SDL2.framework/Headers"
+    INCLUDE_DIR="-I ./include/ -I/Library/Frameworks/SDL2.framework/Headers -I./external/box2d/include"
     LIBRARIES="-F/Library/Frameworks -framework SDL2"
 elif platform.system()=="Windows":
     COMPILER="g++ -g -std=c++17" # Note we use g++ here as it is more likely what you have
     ARGUMENTS="-D MINGW -g -std=c++17 -static-libgcc -static-libstdc++" 
     # INCLUDE_DIR="-I./Core -I./Core/**/*.hpp -I./include/"
-    INCLUDE_DIR="-I./include/ -Winvalid-pch"
+    INCLUDE_DIR="-I./include/ -IC:/msys64/ucrt64/include/SDL2 -Winvalid-pch -I./external/json/single_include/nlohmann -I./core/ -I./ecs -I./ecs/subsystem -I./ecs/component -I./ecs/module -I./io -I./external/box2d/include"
     EXECUTABLE="lab.exe"
     LIBRARIES="-lmingw32 -lSDL2main -lSDL2"
 # (2)=================== Platform specific configuration ===================== #

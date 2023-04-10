@@ -6,15 +6,21 @@ extern ECSCoordinator coordinator;
 
 class ECSFactory{
 public:
-    void Init();
+    ECSFactory();
 
     void InitComponents();
 
-    void InitSybSystems();
+    void InitMenu();
 
-    void InitEntities();
+    void InitEditor();
+
+    void InitGame();
 
 private:
+    void CreateTestEntityFromJSON();
+
+    void CreateTestEntitySecondFromJSON();
+
     void CreatePlayerFromJSON();
 
     void CreateTilemapFromJSON();
@@ -27,7 +33,41 @@ private:
 
     void AddEnemyToJSON(Enemy enemyData);
 
+    void CreateMenuUI();
+
     void CreateEditorUI();
 
-    void CreateButton(Entity entity, const string& btnName, const json& buttonConfig);
+    void CreateUIElement(Entity entity, const string& btnName, const json& buttonConfig, GAME_STATE state, UIType uiType, RENDER_ORDER renderOrder);
+
+    /// @brief register common system for game and editor
+    void RegisterCommonSystem();
+
+    void RegisterMenuSystem();
+
+    void RegisterGameSystem();
+    
+    void RegisterMenuEntity();
+
+    /// @brief register common entity for game and editor
+    void RegisterCommonEntity();
+
+    bool m_IsUIConfigFileExist;
+
+    bool m_IsConfigFileExist;
+
+    json m_Config;
+    json m_ImageConfig;
+    json m_ButtonConfig;
+    json m_CameraConfig;
+    // json m_ComponentConfig;
+
+    bool m_IsInitEditorSystem;
+
+    bool m_IsInitGameSystem;
+
+    bool m_IsInitComponents;
+
+    bool m_IsInitCommonEntity;
+
+    bool m_IsInitCamera;
 };

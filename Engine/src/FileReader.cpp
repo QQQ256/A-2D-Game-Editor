@@ -6,19 +6,27 @@ bool FileReader::LoadJSONFile(const string& fileName){
     ifstream file(fileName);
 
     if(!file.is_open()){
-        Debug::PrintMessage("Failed to open JSON file");
+        // Debug::PrintMessage("Failed to open JSON file");
+        cout << "Failed to open JSON file: " << fileName << endl;
         return false;
     }
 
     try
     {
-        file >> m_Config;
+        if(fileName == UI_CONFIG){
+            file >> m_UIConfig;
+        }
+        if(fileName == COMPONENT_CONFIG){
+            file >> m_ComponentConfig;
+        }
     }
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
         return false;
     }
+
+    file.close();
     
     return true;
 }
@@ -32,8 +40,13 @@ void FileReader::SaveJSONFile(const json currentJSONConfig, const string& jsonFi
     jsonFile.close();
 }
 
-const json& FileReader::GetConfig() const {
-    return m_Config;
+const json& FileReader::GetConfig(const string& fileName) const {
+    if(fileName == COMPONENT_CONFIG){
+        return m_ComponentConfig;
+    }
+    if(fileName == UI_CONFIG){
+        return m_UIConfig;
+    }
 }
 
 bool FileReader::LoadTilemapText(const string &fileName)
@@ -84,6 +97,13 @@ bool FileReader::LoadTilemapText(const string &fileName)
 
 void FileReader::SaveTilemapText(int rows, int cols, const vector<int> &mapData, const string &fileName)
 {
+    // 存储最最新的地图长度
+    if (LoadJSONFile(COMPONENT_CONFIG)){
+        // TODO: cannot save this value
+        m_ComponentConfig["Tilemap"]["mapX"] = rows;
+        SaveJSONFile(m_ComponentConfig, COMPONENT_CONFIG);
+        cout << "Storing map width as: " << m_ComponentConfig["Tilemap"]["mapX"];
+    }
     // std::cout << "rows: " << rows << ", cols: " << cols << std::endl;
     // for (int i = 0; i < cols; i++)
     // {
@@ -95,7 +115,7 @@ void FileReader::SaveTilemapText(int rows, int cols, const vector<int> &mapData,
     // }
     ofstream out(fileName);
 
-    std::cout << "rows: " << rows << ", cols: " << cols << std::endl;
+    // std::cout << "rows: " << rows << ", cols: " << cols << std::endl;
     for (int i = 0; i < cols; i++)
     {
         for (int j = 0; j < rows; j++)

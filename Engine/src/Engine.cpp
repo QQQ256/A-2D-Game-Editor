@@ -5,17 +5,11 @@
 #include <memory>
 #include <iterator>
 
-const int FPS = 30;
-const float Delta = 1000 / FPS;
-
-const int FRAME = 6;
-
 extern ECSCoordinator coordinator;
 
 Engine::Engine()
 {
     m_ECSCoordinator    = std::make_unique<ECSCoordinator>();
-    m_ECSFactory        = std::make_unique<ECSFactory>();
 }
 
 // Proper shutdown and destroy initialized objects
@@ -60,12 +54,14 @@ void Engine::Input(bool *quit){
 // Update SDL
 void Engine::Update()
 {
+    coordinator.Update();
 }
 
 
 // Render
 // The render function gets called once per loop
 void Engine::Render(){
+    coordinator.Render();
 }
 
 void Engine::MainGameLoop()
@@ -82,17 +78,9 @@ void Engine::MainGameLoop()
 
         SetFrameRate(60);
 
-        coordinator.m_PlayerControllerSystem->Update();
+        Render();
 
-        coordinator.m_SpriteSystem->Update();
-
-        coordinator.m_RenderSystem->Render();
-
-        coordinator.m_InputSystem->Update();
-
-        coordinator.m_LevelEditorSystem->Update();
-
-        // coordinator.m_
+        Update();
     }
     // Disable text input
     SDL_StopTextInput();
@@ -126,21 +114,6 @@ void Engine::Shutdown(){
     // }
 }
 
-void Engine::InitializeGraphicsSubSystem(){
-    // Setup our Renderer
-    // mRenderer = new SDLGraphicsEngineRenderer(screenWidth, screenHeight);
-    // if(nullptr == mRenderer){
-    //     exit(1); // Terminate program if renderer 
-    //              // cannot be created.
-    //              // (Optional) TODO:   Could put an error 
-    //              //                    messeage, or try to 
-    //              //                    reinitialize the engine 
-    //              //                    with a different render
-    // }
-}
-
 void Engine::Init(){
-
-    m_ECSFactory->Init();
-
+    coordinator.Init();
 }

@@ -6,7 +6,7 @@ extern ECSCoordinator coordinator;
 
 void InputSystem::Init()
 {
-    m_State = coordinator.m_State;
+    Debug::PrintMessage("Init input system");
 }
 
 void InputSystem::Update()
@@ -33,11 +33,18 @@ void InputSystem::Update()
     if (keyboard_State[SDL_SCANCODE_O]){
         this->DispatchKeyboardEvent_O();
     }
+    if (keyboard_State[SDL_SCANCODE_I]){
+        this->DispatchKeyboardEvent_I();
+    }
+    if (keyboard_State[SDL_SCANCODE_U]){
+        this->DispatchKeyboardEvent_U();
+    }
 
     // mouse detection
     // 使用事件中心传递鼠标的坐标给tilemap子系统，达到解耦目的
     if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))
     {
+        AudioManager::GetInstance().PlaySound(AUDIO_COIN, 60);
         // cout << m_MouseX << ", " << m_MouseY << endl;
         Debug::PrintMessage("left mouse clicked");
         this->DispatchMousePosition_LeftClick(m_MouseX, m_MouseY);
@@ -51,7 +58,7 @@ void InputSystem::Update()
 
     for (auto &entity : m_Entities)
     {
-        switch (m_State)
+        switch (coordinator.m_State)
         {
         case GAME_STATE::EDITOR:
             HandleEditorState(entity, mouseState, keyboard_State);
@@ -63,6 +70,10 @@ void InputSystem::Update()
             break;
         }
     }
+}
+
+void InputSystem::Clear()
+{
 }
 
 void InputSystem::DispatchMousePosition_LeftClick(int mouseX, int mouseY)
@@ -113,6 +124,18 @@ void InputSystem::DispatchKeyboardEvent_O()
     coordinator.TriggerEvent(event);
 }
 
+void InputSystem::DispatchKeyboardEvent_I()
+{
+    Event event(EVENT::EVENT_ON_KEYBOARD_CLICKED_I);
+    coordinator.TriggerEvent(event);
+}
+
+void InputSystem::DispatchKeyboardEvent_U()
+{
+    Event event(EVENT::EVENT_ON_KEYBOARD_CLICKED_U);
+    coordinator.TriggerEvent(event);
+}
+
 void InputSystem::HandleEditorState(const Entity &entity, Uint32 mouseState, const Uint8 *keyboard_State)
 {
 
@@ -133,39 +156,39 @@ void InputSystem::HandleEditorState(const Entity &entity, Uint32 mouseState, con
 void InputSystem::HandleGameState(const Entity &entity, Uint32 mouseState, const Uint8 *keyboard_State)
 {
     // player movement
-    if (coordinator.HashComponent<InPut>(entity))
-    {
-        if (coordinator.HashComponent<Player>(entity))
-        {
-            auto &player = coordinator.GetComponent<Player>(entity);
-            auto &transform = coordinator.GetComponent<Transform>(entity);
-            auto &sprite = coordinator.GetComponent<Sprite>(entity);
-            int playerSpeed = player.speed;
+    // if (coordinator.HashComponent<InPut>(entity))
+    // {
+    //     if (coordinator.HashComponent<Player>(entity))
+    //     {
+    //         auto &player = coordinator.GetComponent<Player>(entity);
+    //         auto &transform = coordinator.GetComponent<Transform>(entity);
+    //         auto &sprite = coordinator.GetComponent<Sprite>(entity);
+    //         int playerSpeed = player.speed;
 
-            if (keyboard_State[SDL_SCANCODE_A])
-            {
-                transform.position.x -= playerSpeed;
-                sprite.m_Dest.x -= playerSpeed;
-            }
-            if (keyboard_State[SDL_SCANCODE_D])
-            {
-                transform.position.x += playerSpeed;
-                sprite.m_Dest.x += playerSpeed;
-            }
-            if (keyboard_State[SDL_SCANCODE_W])
-            {
-                transform.position.y += playerSpeed;
-                sprite.m_Dest.y -= playerSpeed;
-            }
-            if (keyboard_State[SDL_SCANCODE_S])
-            {
-                transform.position.y -= playerSpeed;
-                sprite.m_Dest.y += playerSpeed;
-            }
+    //         if (keyboard_State[SDL_SCANCODE_A])
+    //         {
+    //             transform.position.x -= playerSpeed;
+    //             sprite.m_Dest.x -= playerSpeed;
+    //         }
+    //         if (keyboard_State[SDL_SCANCODE_D])
+    //         {
+    //             transform.position.x += playerSpeed;
+    //             sprite.m_Dest.x += playerSpeed;
+    //         }
+    //         if (keyboard_State[SDL_SCANCODE_W])
+    //         {
+    //             transform.position.y += playerSpeed;
+    //             sprite.m_Dest.y -= playerSpeed;
+    //         }
+    //         if (keyboard_State[SDL_SCANCODE_S])
+    //         {
+    //             transform.position.y -= playerSpeed;
+    //             sprite.m_Dest.y += playerSpeed;
+    //         }
 
-            if (keyboard_State[SDL_SCANCODE_R])
-            {
-            }
-        }
-    }
+    //         if (keyboard_State[SDL_SCANCODE_R])
+    //         {
+    //         }
+    //     }
+    // }
 }

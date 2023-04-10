@@ -2,6 +2,7 @@
 
 #include "System.hpp"
 #include "Event.hpp"
+#include "Player.hpp"
 
 class PlayerControllerSystem : public ISystem
 {
@@ -10,5 +11,24 @@ public:
 
 	void Update() override;
 
-	void OnEventTest_NO_PARAM(const Event& event);
+	void Clear() override;
+
+	Player CreatePlayer();
+
+
+private:
+	void OnKeyboardClicked_A(const Event &event);
+
+	void OnKeyboardClicked_D(const Event &event);
+
+	/// @brief 
+	/// @param direction -1 means left, 1 means right
+	/// @param boundaryOffSet 
+	void MovePlayer(int direction, int boundaryOffSet);
+
+	void DispatchPlayerMovePosition(int x, int y);
+
+	Player	m_Player;
+
+	int 	m_TilemapMaxX;
 };

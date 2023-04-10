@@ -13,6 +13,8 @@ public:
     
     void Update() override;
 
+    void Clear() override;
+
 private:
     
     void OnMouseClicked_Left(const Event& event);
@@ -25,6 +27,10 @@ private:
 
     void OnKeybardClicked_O(const Event& event);
 
+    void OnKeybardClicked_I(const Event& event);
+
+    void OnKeybardClicked_U(const Event& event);
+
     void DispatchTileMapChangedData(const Tilemap& tilemap);
 
     bool IsMouseWintinGameBoundary(int x, int y);
@@ -35,9 +41,10 @@ private:
 
     void PutTile(int mouseX, int mouseY, int tileX, int tileY, int cameraOffset, int screenOffset, int tileType);
 
-    /// @brief convert 1d map data to 2d
+    /// @brief Expand the map
     /// @param m_LevelData 1d map data
-    void ConvertRawMapData(vector<int> m_LevelData);
+    /// @param size tiles you want to add you the map
+    void ConvertRawMapData(vector<int> m_LevelData, int size);
 
     /// @brief calculate map data based on the 2d array
     // void CalculateRenderedMapData();
@@ -61,6 +68,5 @@ private:
     int                 m_TilePixel;
     int                 m_CameraOffset = 0;
     int                 m_CameraSpeed  = 0;
-
-    Tilemap             m_Tilemap;
+    int                 m_MaxMapWidth;
 };

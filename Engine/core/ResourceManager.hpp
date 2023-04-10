@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include <SDL_mixer.h>
 
 #include "Common.hpp"
 #include "Singleton.hpp"
@@ -22,6 +23,8 @@ public:
     static SDL_Texture* GetSDL_Texture(string image_filename, SDL_Renderer*, SDL_Surface*);
 
     // static void DestroyResources();
+
+    static Mix_Chunk* LoadSound(const string& sound_filePath);
 
 private:
     friend class Singleton<ResourceManager>;
@@ -40,6 +43,7 @@ private:
     static SDL_Texture*                             m_Texture;
     static unordered_map<string, SDL_Surface*>      m_SurfaceMap;
     static unordered_map<string, SDL_Texture*>      m_TextureMap;
+    static unordered_map<string, Mix_Chunk*>        m_SoundCache;
 
     // vector<Sprite>                                  m_Sprites;
 };

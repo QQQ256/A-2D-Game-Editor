@@ -11,6 +11,8 @@ public:
 
 	void Update() override;
 
+    void Clear() override;
+
     Sprite CreateSprite();
 
     Sprite CreateSprite(std::string filePath, SDL_Renderer* ren, int sizeX, int sizeY, int posX, int posY, int frame);

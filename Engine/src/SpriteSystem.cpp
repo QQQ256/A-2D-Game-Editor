@@ -22,12 +22,24 @@ void SpriteSystem::Update(){
             sprite.m_Src.y = 0;
 
             // set your destination size in screen
-            sprite.m_Dest.w = 64;
-            sprite.m_Dest.h = 64;
+            sprite.m_Dest.w = sprite.m_SizeX;
+            sprite.m_Dest.h = sprite.m_SizeY;
 
             sprite.m_CurrentFrame++;
+
+            // update the position of sprite
+            if(coordinator.HashComponent<Transform>(entity)) {
+                Transform trans = coordinator.GetComponent<Transform>(entity);
+                sprite.m_Dest.x = trans.position.x;
+                sprite.m_Dest.y = trans.position.y;
+            }
         }
     }
+}
+
+void SpriteSystem::Clear()
+{
+    
 }
 
 Sprite SpriteSystem::CreateSprite(){

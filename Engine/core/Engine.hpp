@@ -58,12 +58,7 @@ public:
      * Explicitly call 'Shutdown' to terminate the engine
      */
     void Shutdown();
-
-    /**
-     * Request to startup the Graphics Subsystem
-     */
-	void InitializeGraphicsSubSystem();
-
+    
     void SetFrameRate(int frame);
 
     void Init();
@@ -71,7 +66,5 @@ public:
 
 private:
     unique_ptr<ECSCoordinator>      m_ECSCoordinator;
-    unique_ptr<ECSFactory>          m_ECSFactory;
-
 };
 #endif
